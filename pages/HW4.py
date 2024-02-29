@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+from math import log, e
 
 
 def convert(value, prefix):
@@ -25,7 +26,7 @@ def q1():
     st.subheader("Data:")
     capacitance = st.number_input("Enter C (nF): ", value=1.5, step=0.01)
     dielectric_constant = st.number_input(
-        "Enter K (dielectric constant): ", value=5, step=1
+        "Enter K (dielectric constant): ", value=5.00, step=0.01
     )
 
     # calculations
@@ -114,12 +115,61 @@ def q4():
         "An electrical engineering student creates a circuit as shown in the figure. Find the following. (Assume C1 = ..... µF and C2 = ..... µF.)"
     )
 
+    st.subheader("Data:")
+    c_1 = st.number_input("Enter C1 (µF): ", value=33.00, step=0.01)
+    c_2 = st.number_input("Enter C2 (µF): ", value=3.93, step=0.01)
+    c_3 = 6.00
+    v_tot = 9.00
+
+    # calculations
+    c_tot = 1 / ((1 / (c_2 + c_3)) + 2 * (1 / c_1))
+    q_tot = c_tot * v_tot
+    q_1 = q_tot
+    q_2 = q_tot * (c_2 / (c_2 + c_3))
+    q_3 = q_tot * (c_3 / (c_2 + c_3))
+    v_1 = q_1 / c_1
+    v_2 = q_2 / c_2
+    v_3 = q_3 / c_3
+
+    st.subheader("Answers:")
+
+    st.write("a) The equivalent capacitance (µF):")
+    st.code(f"{c_tot:.3f}")
+
+    st.write("b) The individual charges (µC) (C1r, C1l, C2, 6µF) respectively:")
+    st.code(f"{q_1:.3f}")
+    st.code(f"{q_1:.3f}")
+    st.code(f"{q_2:.3f}")
+    st.code(f"{q_3:.3f}")
+
+    st.write("c) The individual potential diff (V) (C1r, C1l, C2, 6µF) respectively:")
+    st.code(f"{v_1:.3f}")
+    st.code(f"{v_1:.3f}")
+    st.code(f"{v_2:.3f}")
+    st.code(f"{v_3:.3f}")
+
 
 def q5():
     st.header("Q5", divider="gray")
     st.write(
         "A ...l...-m length of coaxial cable has an inner conductor that has a diameter of 2.58 mm and carries a charge of 8.10 µC. The surrounding conductor has an inner diameter of 7.27 mm and a charge of -8.10 µC. Assume the region between the conductors is air."
     )
+
+    st.subheader("Data:")
+    l = st.number_input("Enter cable length (m): ", value=65.0, step=0.1)
+    inner_d = 2.58e-3
+    outer_d = 7.27e-3
+    q = 8.1e-6
+
+    # calculations
+    c = l / (2 * 9e9 * log(outer_d / inner_d, e))
+    v = q / c
+
+    st.subheader("Answers:")
+    st.write("a) The equivalent capacitance (nF):")
+    st.code(f"{convert(c, 'n'):.3f}")
+    st.write("b) The potential diff (kV):")
+    st.code(f"{convert(v, 'k'):.3f}")
 
 
 if __name__ == "__main__":
