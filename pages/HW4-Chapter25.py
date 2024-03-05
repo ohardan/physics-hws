@@ -76,14 +76,20 @@ def q3():
 
     st.subheader("Data:")
     charge = st.number_input("Enter C (nC): ", value=2.00, step=0.01)
-    x1 = st.number_input("Enter x2 (mm): ", value=1.70, step=0.01)
-    y1 = -1.3  # st.number_input("Enter y2 (mm): ", value=-1.30, step=0.01)
-    x2 = -1.2  # st.number_input("Enter x1 (mm): ", value=-1.20, step=0.01)
-    y2 = st.number_input("Enter y1 (mm): ", value=1.00, step=0.01)
+    x_p = -1.2
+    y_p = st.number_input(
+        "Enter y of the positive charge (mm): ", value=1.00, step=0.01
+    )
+    x_n = st.number_input(
+        "Enter x of the negative charge (mm): ", value=1.70, step=0.01
+    )
+    y_n = -1.3
 
     # calculations
-    dipole_moment_x = charge * 10**-9 * (x2 - x1) * 10**-3
-    dipole_moment_y = charge * 10**-9 * (y2 - y1) * 10**-3
+    distance_x = x_p - x_n
+    distance_y = y_p - y_n
+    dipole_moment_x = charge * 10**-9 * (distance_x) * 10**-3
+    dipole_moment_y = charge * 10**-9 * (distance_y) * 10**-3
     dipole_moment = np.array([dipole_moment_x, dipole_moment_y])
 
     field = np.array([7800, -4900])
@@ -96,8 +102,8 @@ def q3():
     st.subheader("Answers:")
 
     st.write("a) The dipole moment is (i then j):")
-    st.code(f"{dipole_moment_x}")
-    st.code(f"{dipole_moment_y}")
+    st.code(f"{dipole_moment_x:.2e}")
+    st.code(f"{dipole_moment_y:.2e}")
 
     st.write("b) The torque is (in k direction):")
     st.code(f"{torque:.3e}")
